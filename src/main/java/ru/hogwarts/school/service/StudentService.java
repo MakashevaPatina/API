@@ -1,7 +1,9 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,40 +15,35 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class StudentService {
-    private final Map<Long, Student> students = new HashMap<>();
+    private final StudentRepository studentRepository;
 
-    private long lastId = 0;
-
+    @Autowired
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(lastId, student);
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-        return students.get(id);
+        return studentRepository.findById(id).get();
     }
 
     public Student editStudent(Student student) {
-        if (students.containsKey(student.getId())) {
-            student.setId(++lastId);
-            students.put(lastId, student);
-            return student;
-        }
-        return null;
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(long id) {
-        return students.remove(id);
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
     }
 
 
     public Collection<Student> getAllStudents() {
-        return students.values();
+        return studentRepository.findAll();
     }
 
     public List<Student> findStudentsByAge(int age) {
-        return students.values().stream().filter(student -> student.getAge() == age).collect(toList());
+        return studentRepository.findAll().stream().filter(student -> student.getAge() == age).toList();
     }
 }
