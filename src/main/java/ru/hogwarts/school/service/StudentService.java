@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Студент с id " + id + " не найден"));
     }
 
     public Student editStudent(Student student) {
@@ -44,6 +45,12 @@ public class StudentService {
     }
 
     public List<Student> findStudentsByAge(int age) {
-        return studentRepository.findAll().stream().filter(student -> student.getAge() == age).toList();
+        return studentRepository.findByAge(age);
     }
+
+    public List<Student> findStudentsByAgeBetween(int minAge, int maxAge) {
+        return studentRepository.findByAgeBetween(minAge, maxAge);
+    }
+
+
 }

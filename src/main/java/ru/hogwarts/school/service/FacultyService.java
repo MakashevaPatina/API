@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,12 +19,12 @@ public class FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
-    public Faculty createStudent(Faculty faculty) {
+    public Faculty createFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 
-    public Faculty findStudent(Long id) {
-        return facultyRepository.findById(id).get();
+    public Faculty findFaculty(Long id) {
+        return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Факультет с id " + id + " не найден"));
     }
 
     public Faculty editFaculty(Faculty faculty) {
@@ -39,6 +40,10 @@ public class FacultyService {
     }
 
     public List<Faculty> findFacultyByColor(String color) {
-        return facultyRepository.findAll().stream().filter(faculty -> faculty.getColor().equalsIgnoreCase(color)).toList();
+        return facultyRepository.findByColorIgnoreCase(color);
+    }
+
+    public List<Faculty> findFacultiesByNameOrColor(String color, String name) {
+        return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(color, name);
     }
 }
