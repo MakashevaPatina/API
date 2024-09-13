@@ -24,7 +24,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(Long id) {
-        return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Факультет с id " + id + " не найден"));
+        return facultyRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Объект " + Faculty.class.getSimpleName() + " с id " + id + " не найден"));
     }
 
     public Faculty editFaculty(Faculty faculty) {
