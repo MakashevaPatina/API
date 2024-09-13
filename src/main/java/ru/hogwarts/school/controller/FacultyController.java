@@ -20,13 +20,13 @@ public class FacultyController {
 
 
     @PostMapping
-    public Faculty createStudent(@RequestBody Faculty faculty) {
-        return facultyService.createStudent(faculty);
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
+        return facultyService.createFaculty(faculty);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Faculty> getStudent(@PathVariable Long id) {
-        Faculty student = facultyService.findStudent(id);
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+        Faculty student = facultyService.findFaculty(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
@@ -34,7 +34,7 @@ public class FacultyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Faculty> editStudent(@RequestBody Faculty student) {
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty student) {
         Faculty foundStudent = facultyService.editFaculty(student);
         if (foundStudent == null) {
             return ResponseEntity.notFound().build();
@@ -43,7 +43,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Faculty> deliteFaculty(@PathVariable Long id) {
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
@@ -51,5 +51,16 @@ public class FacultyController {
     @GetMapping("/filter/color/{color}")
     public List<Faculty> findFacultuByColor(@PathVariable String color) {
         return facultyService.findFacultyByColor(color);
+    }
+
+    @GetMapping("/filter/search")
+    public List<Faculty> findFacultuByColorOrName(@RequestParam String query) {
+        return facultyService.findFacultiesByNameOrColor(query, query);
+    }
+
+    @GetMapping("/{facultyId}/students")
+    public List<Student> getStudentsOfFaculty(@PathVariable Long facultyId) {
+        Faculty faculty = facultyService.findFaculty(facultyId);
+        return faculty.getStudents();
     }
 }
