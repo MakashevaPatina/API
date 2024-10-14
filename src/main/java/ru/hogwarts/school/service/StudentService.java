@@ -1,19 +1,16 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
+import java.util.List;
+
 
 @Service
 public class StudentService {
@@ -40,7 +37,6 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-
     public Collection<Student> getAllStudents() {
         return studentRepository.findAll();
     }
@@ -54,4 +50,15 @@ public class StudentService {
     }
 
 
+    public long getTotalNumberOfStudents() {
+        return studentRepository.countStudents();
+    }
+
+    public double getAverageAgeOfStudents() {
+        return studentRepository.averageAge();
+    }
+
+    public Collection<Student> getLastFiveStudents() {
+        return studentRepository.getLastFiveStudents();
+    }
 }

@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -62,5 +63,20 @@ public class StudentController {
     public Faculty getFacultyOfStudent(@PathVariable Long studentId) {
         Student student = studentService.findStudent(studentId);
         return student.getFaculty();
+    }
+
+    @GetMapping("/total")
+    public long getTotalNumberOfStudents() {
+        return studentService.getTotalNumberOfStudents();
+    }
+
+    @GetMapping("/average-age")
+    public double getAverageAgeOfStudents() {
+        return studentService.getAverageAgeOfStudents();
+    }
+
+    @GetMapping("/last-five")
+    public Collection<Student> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
     }
 }
