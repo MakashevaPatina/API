@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-indexes
+      author: Makasheva
+      changes:
+        - sqlFile:
+            path: course-four-lesson-three.sql
+            relativeToChangelogFile: true
