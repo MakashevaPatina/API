@@ -49,12 +49,12 @@ public class FacultyController {
     }
 
     @GetMapping("/filter/color/{color}")
-    public List<Faculty> findFacultuByColor(@PathVariable String color) {
+    public List<Faculty> findFacultyByColor(@PathVariable String color) {
         return facultyService.findFacultyByColor(color);
     }
 
     @GetMapping("/filter/search")
-    public List<Faculty> findFacultuByColorOrName(@RequestParam String query) {
+    public List<Faculty> findFacultyByColorOrName(@RequestParam String query) {
         return facultyService.findFacultiesByNameOrColor(query, query);
     }
 
@@ -62,5 +62,25 @@ public class FacultyController {
     public List<Student> getStudentsOfFaculty(@PathVariable Long facultyId) {
         Faculty faculty = facultyService.findFaculty(facultyId);
         return faculty.getStudents();
+    }
+
+    @GetMapping("/longest-Faculty-Name")
+    public String longestFacultyName() {
+        return facultyService.longestFacultyName();
+    }
+
+    @GetMapping("/original-Sum")
+    public Long originalSum() {
+        return facultyService.originalSum();
+    }
+
+    @GetMapping("/optimized-Sum-One")
+    public Long optimizedSumOne() {
+        return facultyService.optimizedSumOne();
+    }
+
+    @GetMapping("/optimized-Sum-Two")
+    public Long optimizedSumTwo() {
+        return facultyService.optimizedSumTwo();
     }
 }
