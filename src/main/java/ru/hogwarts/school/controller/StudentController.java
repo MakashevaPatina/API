@@ -8,6 +8,7 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
@@ -88,5 +89,52 @@ public class StudentController {
     @GetMapping("/middle-age-students")
     public double getMiddleAge() {
         return studentService.getMiddleAge();
+    }
+
+    @GetMapping("/print-parallel")
+    public void printStudentsParallel() {
+        Collection<Student> studentsCollection = studentService.getAllStudents();
+        List<Student> students = studentsCollection.stream()
+                .limit(6)
+                .toList();
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        Collection<Student> studentsCollection = studentService.getAllStudents();
+        List<Student> students = studentsCollection.stream()
+                .limit(6)
+                .toList();
+
+        printSynchronizedHello(students.get(0).getName());
+        printSynchronizedHello(students.get(1).getName());
+
+        new Thread(() -> {
+            printSynchronizedHello(students.get(2).getName());
+            printSynchronizedHello(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            printSynchronizedHello(students.get(4).getName());
+            printSynchronizedHello(students.get(5).getName());
+        }).start();
+
+    }
+
+    public synchronized void printSynchronizedHello(String name) {
+        System.out.println("Hello " + name);
     }
 }
