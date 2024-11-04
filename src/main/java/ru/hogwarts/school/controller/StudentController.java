@@ -79,4 +79,14 @@ public class StudentController {
     public Collection<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
+
+    @GetMapping("/names-starting-with-a")
+    public List<String> getStudentNamesStartingWithA() {
+        return studentService.getNamesStartingWithA();
+    }
+
+    @GetMapping("/middle-age-students")
+    public double getMiddleAge() {
+        return studentService.getMiddleAge();
+    }
 }
