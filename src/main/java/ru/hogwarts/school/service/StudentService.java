@@ -9,9 +9,11 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -102,4 +104,46 @@ public class StudentService {
                 .orElse(0);
     }
 
+    public synchronized void printSynchronizedHello(String name) {
+        System.out.println("Hello " + name);
+    }
+
+    public void printStudentsParallel(Collection<Student> studentsCollection) {
+        List<Student> students = studentsCollection.stream()
+                .limit(6)
+                .toList();
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        }).start();
+
+    }
+
+    public void printStudentsSynchronized(Collection<Student> studentsCollection) {
+        List<Student> students = studentsCollection.stream()
+                .limit(6)
+                .toList();
+
+        printSynchronizedHello(students.get(0).getName());
+        printSynchronizedHello(students.get(1).getName());
+
+        new Thread(() -> {
+            printSynchronizedHello(students.get(2).getName());
+            printSynchronizedHello(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            printSynchronizedHello(students.get(4).getName());
+            printSynchronizedHello(students.get(5).getName());
+        }).start();
+    }
 }
