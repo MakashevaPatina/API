@@ -8,6 +8,7 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
@@ -89,4 +90,17 @@ public class StudentController {
     public double getMiddleAge() {
         return studentService.getMiddleAge();
     }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        Collection<Student> studentsCollection = studentService.getAllStudents();
+        studentService.printStudentsSynchronized(studentsCollection);
+    }
+
+    @GetMapping("/print-parallel")
+    public void printStudentsParallel() {
+        Collection<Student> studentsCollection = studentService.getAllStudents();
+        studentService.printStudentsParallel(studentsCollection);
+    }
+
 }
